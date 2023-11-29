@@ -5,8 +5,14 @@ async function run() {
   const page = await browser.newPage() 
   await page.goto('https://results.hyrox.com/season-6/?pid=list_overall&pidp=ranking_nav')
 
-  await page.screenshot({ path: 'example.png', fullPage: true})
-  await page.pdf({ path: 'example.pdf', format: 'A4'})
+  const results = await page.evaluate(() => 
+    Array.from(document.querySelectorAll('#main-content .row'), (row) => ({
+      resultRow: row
+      // resultRow: row.querySelector('.row h4').innerText
+    }))
+  )
+
+  console.log(results)
 
   await browser.close()
 }
